@@ -17,7 +17,7 @@ using namespace std;
 
 int32_t main(int argc, char *argv[])
 {
-    std::ifstream f("data.jsonnn");
+    std::ifstream f("data.json");
     json data = json::parse(f);
     string interface = data.value("interface_name", "not found");
     string port_ = data.value("port", "not found");
