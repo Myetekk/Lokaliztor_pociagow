@@ -1,0 +1,5 @@
+Aby uruchomić program należy w konsoli wejść do folderu, w którym zapisany jest projekt, i użycie następujących komend:
+
+"g++ -o main main.cpp workers/core1.cpp workers/core2.cpp utils/netfunctions.cpp -lstdc++"
+
+"./main"
