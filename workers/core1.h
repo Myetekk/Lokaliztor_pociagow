@@ -11,7 +11,7 @@ using namespace std;
 class Core1 : public Thread 
 {
     public:
-    Core1( string interface_name_, int32_t port_ );
+    Core1(  );
     virtual ~Core1();
     void* run(  );
 

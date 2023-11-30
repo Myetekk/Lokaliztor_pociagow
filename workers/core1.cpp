@@ -2,39 +2,94 @@
 #include <unistd.h>
 #include <string>
 #include <inttypes.h>
+#include <algorithm>
+#include <fstream>
+#include <iomanip>
 
+#include "../nlohman/json.hpp"
 #include "core1.h"
 #include "../utils/netfunctions.h"
 
+using json = nlohmann::json;
+
 using namespace std;
 
-string interface_name1;
-int32_t port1;
-
-Core1::Core1(string interface_name_, int32_t port_)
+Core1::Core1()
 {
-    interface_name1 = interface_name_;
-    port1 = port_;
+
 }
 
 Core1::~Core1() { };
 
+
+
+
+
+
+
+
+
+
+string prepare_string(){
+    ifstream infile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
+    string data;
+    getline(infile, data);  // assign one line to "data"
+
+    data = data.substr(data.find("=") + 1);  // delete miliseconds and "DATA="
+
+    data.erase(remove(data.begin(), data.end(), '|'), data.end());  // delete "|"
+    data.erase(remove(data.begin(), data.end(), ';'), data.end());  // delete ";"
+
+    return data;
+}
+
+
+
+
+
+array<string, 3> extract_info(int info_index){
+    std::ifstream infile("train_data/data_instrukcja.json");
+    json data = json::parse(infile);  // parse json
+    json firstAwiaParams = data["AwiaParams"][0];  // enter table AwiaParams
+    json paramsArray = firstAwiaParams["params"][info_index];  // enter table Params
+
+    array<string, 3> info;
+
+    info[0] = paramsArray.value("key", "not found");  // get value "key"
+    info[1] = to_string(paramsArray.at("awiabit"));  // get value "awiabit"
+    info[2] = to_string(paramsArray.at("len"));  // get value "len"
+
+    return info;
+}
+
+
+
+
+
+void transform_info(string data, string info_name, int info_pos, int info_len){  // do zmiany- co gdy "len" inne niż "8"
+    string info = data.substr(info_pos/4, info_len/4);  // find wanted info in string 
+    int info_int;
+    istringstream(info) >> hex >> info_int;  // convert info to decimal
+    fprintf(stderr, "%s: %d \n", info_name.c_str(), info_int);  // print info
+}
+
+
+
+
+
 void* Core1::run()
 { 
-    int i = 0;
-    
-    std::string ipb = getIfBroadcastAddr(interface_name1);
+    for(int i=0; i<6; i++){
+        string data = prepare_string();
 
-    while(started)
-    {
-        std::string sendframe = to_string(i);
-        std::vector<char> sendframevec(sendframe.begin(), sendframe.end());
-        sendUdpBroadcast(ipb, port1, sendframevec);
-        // cout << i <<endl;
-        fprintf(stderr, "\nWiadomość wysłana: %s \n", to_string(i).c_str());
-        i++;
-        sleep(3);
+        array<string, 3> current_info = extract_info(i);
+        
+        transform_info( data, current_info[0], stoi(current_info[1]), stoi(current_info[2]) );
     }
+
 
     return NULL;
 }
+
+
+
