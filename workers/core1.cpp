@@ -50,10 +50,27 @@ array<string, 3> extract_info(int info_index){
 }
 
 
-void transform_info(string data, string info_name, int info_pos, int info_len){  // do zmiany- co gdy "len" inne niż "8"
-    string info = data.substr(info_pos/4, info_len/4);  // find wanted info in string 
+void transform_info(string data, string info_name, int info_pos, int info_len)
+{ 
+    // do zmiany- co gdy "len" inne niż "8"
+    // W tej funkcji trzeba poprawić odczytywanie współrzędnych szerokości i wysokości geograficznej
+
+    if(info_len == 8)
+    {
+        info_pos = info_pos/4;
+        info_len = info_len/4;
+    }
+    if(info_len == 32)
+    {
+        info_pos = info_pos/8;
+        info_len = info_len/8;
+    }
+
+    string info = data.substr(info_pos, info_len);  // find wanted info in string 
     int info_int;
     istringstream(info) >> hex >> info_int;  // convert info to decimal
+    //nie możemy zakładać że wszystkie wartości będą int. 
+    //trzeba poprawić funkcę żeby była uniwersalna i działała też dla float
     fprintf(stderr, "%s: %d \n", info_name.c_str(), info_int);  // print info
 }
 
@@ -64,14 +81,22 @@ void* Core1::run()
     while (!readFromFile.eof())
     {
         getline(readFromFile,line);
+        string data = prepare_string(line);
+
         for(int i=0; i<6; i++)
         {
-            string data = prepare_string(line);
-
-            array<string, 3> current_info = extract_info(i);
-        
+            array<string, 3> current_info = extract_info(i);  
             transform_info( data, current_info[0], stoi(current_info[1]), stoi(current_info[2]) );
         }
+
+        //reading latitude from file
+        array<string, 3> current_info = extract_info(14);
+        transform_info( data, current_info[0], stoi(current_info[1]), stoi(current_info[2]) );
+
+        //reading longitude from file
+        current_info = extract_info(15);
+        transform_info( data, current_info[0], stoi(current_info[1]), stoi(current_info[2]) );
+
         sleep(1);
     }
     return NULL;
