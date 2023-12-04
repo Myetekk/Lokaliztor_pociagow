@@ -48,7 +48,11 @@ array<string, 3> extract_info(int info_index){
 
     return info;
 }
-void byte_swap(int length,string& text){//Funtion swapping bytes from little endian to big endian, works only for numbers of length 8,16,24 and so on....
+
+
+void byte_swap(string& text){//Funtion swapping bytes from little endian to big endian, works only for numbers of length 8,16,24 and so on....
+
+        int length = text.length();
         if(length<=2)return;//no need to change bytes
         int x = length/2;
         char temp;
@@ -60,9 +64,6 @@ void byte_swap(int length,string& text){//Funtion swapping bytes from little end
                 text[i+1]=text[length-1-i];
                 text[length-1-i]=temp;
         }
-
-
-
 }
 
 void transform_info(string data, string info_name, int info_pos, int info_len)
@@ -73,19 +74,29 @@ void transform_info(string data, string info_name, int info_pos, int info_len)
     info_pos = info_pos/4;
     info_len = info_len/4;
     if(info_len<=2){
-    string info = data.substr(info_pos, info_len);  // find wanted info in string 
-    int info_int;
-    
-    istringstream(info) >> hex >> info_int;  // convert info to decimal
-    //nie możemy zakładać że wszystkie wartości będą int. 
-    //trzeba poprawić funkcę żeby była uniwersalna i działała też dla float
-    fprintf(stderr, "%s: %d \n", info_name.c_str(), info_int);  // print info
+        string info = data.substr(info_pos, info_len);  // find wanted info in string 
+        int info_int;
+        
+        istringstream(info) >> hex >> info_int;  // convert info to decimal
+        fprintf(stderr, "%s: %d \n", info_name.c_str(), info_int);  // print info
     }
     else{
         string info = data.substr(info_pos,info_len);
-        //std::cout<<"Before reversing:"<<info<<endl;
-        byte_swap(8,info);
-        fprintf(stderr, "%s: %s \n", info_name.c_str(), info.c_str());
+        byte_swap(info);
+
+        union ulf
+        {
+            unsigned long ul;
+            float f;
+        };
+
+        ulf u;
+        string str = info;
+        stringstream ss(str);
+        ss >> hex >> u.ul;
+        float f = u.f;
+
+        fprintf(stderr, "%s: %f \n", info_name.c_str(), f);
 
 
 
@@ -117,6 +128,7 @@ void* Core1::run()
         current_info = extract_info(15);
         transform_info( data, current_info[0], stoi(current_info[1]), stoi(current_info[2]) );
 
+        cout << "\n";
         sleep(1);
     }
     return NULL;
