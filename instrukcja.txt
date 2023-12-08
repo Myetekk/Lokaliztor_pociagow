@@ -1,5 +1,5 @@
 Aby uruchomić program należy w konsoli przejść do folderu, w którym zapisany jest projekt, i użycie następujących komend:
 
-"g++ -o main main.cpp workers/core1.cpp -lstdc++"
+"g++ -o main main.cpp -lstdc++"
 
 "./main"
