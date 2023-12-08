@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 
+#include "workers/Find_Train_by_Distance.h"
 #include "utils/netfunctions.h"
 #include "nlohman/json.hpp"
 using json = nlohmann::json;
@@ -163,28 +164,11 @@ int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t 
     return (int32_t)Result::SUCCESS;
 }
 
-
-
-
-
-//Reading routes from file
-void readStations(vector<string>& route){
-    fstream file_route("train_data/route.json");
-    json route_json = json::parse(file_route);
-    route = route_json.get<vector<string>>();
-}
-
-//Reading distaances from file
-void readDistances(vector<int>& distance){
-    fstream file_distance("train_data/distances.json");
-    json distance_json = json::parse(file_distance);
-    distance = distance_json.get<vector<int>>();
-}
-
 int findFirstStation(float& x,float& y){
     return 0;
 }
 
+// Reading train's distance on the begining of the run
 void distanceOnStart(int &distance_on_start){
     float distance_on_start_temp;
 
@@ -215,13 +199,11 @@ int32_t main(int argc, char *argv[])
     float x,y;
     int distance_from_start;
     int distance_on_start;
-    float current_distance;
+    float current_distance = (distance_from_start - distance_on_start);
+    float current_distance_prev = -1;
 
     int firststation = -1;
     int state = 0;
-
-    vector<string> route;
-    vector<int> distance;
 
     distanceOnStart(distance_on_start);
 
@@ -230,24 +212,28 @@ int32_t main(int argc, char *argv[])
         getline(readFromFile,line);
         string data = prepare_string(line);
 
-        current_distance = (distance_from_start - distance_on_start);
-
         //reading coords, and distance from file
         getCoords(data, x, y, distance_from_start);
-        cout << setprecision(8) << endl << "X:" << x << endl << "Y:" << y << endl;
-        cout << "DistanceFromStart: " << current_distance / 1000 << endl;
-        cout << "\n";
+
+        //żeby nie wypisywać kilka razy danych z tego samego miejsca (gdy pociąg stoi na stacji, często na trasie reportuje 2 razy to samo)
+        current_distance = (distance_from_start - distance_on_start);
+        if (current_distance != current_distance_prev){
+            cout << setprecision(8) << endl << "X: " << x << endl << "Y: " << y << endl;
+            cout << "Distance from start: " << current_distance / 1000 << endl;
+            cout << "Current location: " << Find_Train_by_Distance(current_distance) << endl;
+            cout << "\n";
+            usleep(400000);
+        }
+        current_distance_prev = current_distance;
 
         if(firststation == -1){
             findFirstStation(x,y);
         }
 
-        // readStations(route);
-        // readDistances(distance);
-
-        // sleep(0.9);
-        usleep(100000);
+        // usleep(500000);
     }
+
+
 
 
     return 0;

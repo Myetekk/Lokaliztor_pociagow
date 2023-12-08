@@ -8,14 +8,6 @@
 
 using namespace std;
 
-class Core1 : public Thread 
-{
-    public:
-    Core1(  );
-    virtual ~Core1();
-    void* run(  );
-
-    private:
-};
+string Find_Train_by_Distance(float current_distance);
 
 #endif
