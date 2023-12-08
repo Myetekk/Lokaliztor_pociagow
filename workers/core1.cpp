@@ -14,6 +14,8 @@ using json = nlohmann::json;
 
 using namespace std;
 
+#define MATH_PI 3.14159265358979323846
+#define earthRadiusKm 6371.0
 Core1::Core1()
 {
 
@@ -137,12 +139,54 @@ void getCoords(string data,float& x, float& y,int& distance){
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]),distanceF);
     distance = distanceF;
 }
+// This function converts decimal degrees to radians
+double deg2rad(double deg) {
+  return (deg * MATH_PI / 180);
+}
+
+//  This function converts radians to decimal degrees
+double rad2deg(double rad) {
+  return (rad * 180 / MATH_PI);
+}
+int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t *odist)
+{
+    if ((lat1 == lat2) && (lon1 == lon2))
+    {
+        *odist = 0;
+        return (int32_t)Result::SUCCESS;
+    }
+    double lat1r, lon1r, lat2r, lon2r, u, v;
+    lat1r = deg2rad(lat1);
+    lon1r = deg2rad(lon1);
+    lat2r = deg2rad(lat2);
+    lon2r = deg2rad(lon2);
+    u = sin((lat2r - lat1r)/2);
+    v = sin((lon2r - lon1r)/2);
+    *odist = 1000 * 1000 * 2.0 * earthRadiusKm * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
+
+    return (int32_t)Result::SUCCESS;
+}
+//Reading data from file
+void readData(vector<string>& route){
+    fstream f1("train_data/route.json");
+    json j = json::parse(f1);
+    route = j.get<vector<string>>();
+
+}
+int findFirstStation(float& x,float& y){
+    return 0;
+
+
+}
 void* Core1::run()
 { 
     ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
     string line;
     float x,y;
     int distance;
+    int firststation = -1;
+    int state = 0;
+    vector<string> route;
     while (!readFromFile.eof())
     {
         getline(readFromFile,line);
@@ -154,11 +198,15 @@ void* Core1::run()
         }
         //reading coords, and distance from file
         getCoords(data,x,y,distance);
-        cout<<endl<<"X:"<<x<<endl<<"Y:"<<y<<endl;
+        cout<<setprecision(8)<<endl<<"X:"<<x<<endl<<"Y:"<<y<<endl;
         cout<<"DistanceFromStart: "<<distance<<endl;
         cout << "\n";
-        
-        sleep(0.1);
+        if(firststation == -1){
+            findFirstStation(x,y);
+
+        }
+        readData(route);
+        sleep(1);
     }
     return NULL;
 }
