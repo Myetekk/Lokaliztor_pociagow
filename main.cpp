@@ -5,14 +5,12 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
-
 #include "workers/Find_Train_by_Distance.h"
+#include "workers/Find_Train_by_GPS.h"
 #include "utils/netfunctions.h"
 #include "nlohman/json.hpp"
 using json = nlohmann::json;
 
-#define MATH_PI 3.14159265358979323846
-#define earthRadiusKm 6371.0
 
 using namespace std;
 
@@ -72,11 +70,6 @@ array<string, 3> extract_info(int info_index){
     info[2] = to_string(paramsArray.at("len"));  // get value "len"
     return info;
 }
-
-
-
-
-
 void byte_swap(string& text){  // Funtion swapping bytes from little endian to big endian, works only for numbers of length 8,16,24 and so on....
         int length = text.length();
         if(length<=2)return;  // no need to change bytes
@@ -91,11 +84,6 @@ void byte_swap(string& text){  // Funtion swapping bytes from little endian to b
                 text[length-1-i]=temp;
         }
 }
-
-
-
-
-
 void transform_info(string data, string info_name, int info_pos, int info_len,float &coord)
 { 
     info_pos = info_pos/4;
@@ -141,59 +129,23 @@ void getCoords(string data, float& x, float& y, int& distance){
     float distance_temp;
     array<string, 3> current_info = extract_info(14);
     transform_info(data,current_info[0],stoi(current_info[1]),stoi(current_info[2]),x);
-
     //reading longitude from file
     current_info = extract_info(15);
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]),y);
-
     current_info = extract_info(18);
     //reading distance from file
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]),distance_temp);
-
     distance = distance_temp;
 }
-
-
-
-
-
-// This function converts decimal degrees to radians
-double deg2rad(double deg) {
-  return (deg * MATH_PI / 180);
-}
-
-//  This function converts radians to decimal degrees
-double rad2deg(double rad) {
-  return (rad * 180 / MATH_PI);
-}
-
-
-
-
-
-int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t *odist)
-{
-    if ((lat1 == lat2) && (lon1 == lon2))
-    {
-        *odist = 0;
-        return (int32_t)Result::SUCCESS;
-    }
-    double lat1r, lon1r, lat2r, lon2r, u, v;
-    lat1r = deg2rad(lat1);
-    lon1r = deg2rad(lon1);
-    lat2r = deg2rad(lat2);
-    lon2r = deg2rad(lon2);
-    u = sin((lat2r - lat1r)/2);
-    v = sin((lon2r - lon1r)/2);
-    *odist = 1000 * 1000 * 2.0 * earthRadiusKm * asin(sqrt(u * u + cos(lat1r) * cos(lat2r) * v * v));
-
-    return (int32_t)Result::SUCCESS;
-}
-
 int findFirstStation(float& x,float& y){
     return 0;
 }
-
+//Reading routes from file
+void readStationsM(vector<string>& route){
+    fstream file_route("train_data/route.json");
+    json route_json = json::parse(file_route);
+    route = route_json.get<vector<string>>();
+}
 // Reading train's distance on the begining of the run
 void distanceOnStart(int &distance_on_start){
     float distance_on_start_temp;
@@ -207,19 +159,10 @@ void distanceOnStart(int &distance_on_start){
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]), distance_on_start_temp);
     distance_on_start = distance_on_start_temp;
 }
-
-
-
-
-
-
-
-
-
-
 int32_t main(int argc, char *argv[])
 {
-
+    vector<string> route;
+    readStationsM(route);
     std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
 
     //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
@@ -234,26 +177,21 @@ int32_t main(int argc, char *argv[])
 
     ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
     string line;
-
     float x,y;
     int distance_from_start;
     int distance_on_start;
     float current_distance = (distance_from_start - distance_on_start);
     float current_distance_prev = -1;
-
     int firststation = -1;
     int state = 0;
-
+    int currentStation = 0;
     distanceOnStart(distance_on_start);
-
     while (!readFromFile.eof())
     {
         getline(readFromFile,line);
         string data = prepare_string(line);
-
         //reading coords, and distance from file
         getCoords(data, x, y, distance_from_start);
-
         //żeby nie wypisywać kilka razy danych z tego samego miejsca (gdy pociąg stoi na stacji, często na trasie reportuje 2 razy to samo)
         current_distance = (distance_from_start - distance_on_start);
         if (current_distance != current_distance_prev){
@@ -261,17 +199,16 @@ int32_t main(int argc, char *argv[])
             cout << "Distance from start: " << current_distance / 1000 << endl;
             cout << "Current location: " << Find_Train_by_Distance(current_distance) << endl;
             cout << "\n";
-            usleep(400000);
+            //usleep(400000);
         }
         current_distance_prev = current_distance;
-
         if(firststation == -1){
             findFirstStation(x,y);
         }
 
-        // usleep(500000);
+        //usleep(500000);
+        Find_Train_by_GPS(x,y,state,coordinates,currentStation,route);
     }
-
 
 
 
