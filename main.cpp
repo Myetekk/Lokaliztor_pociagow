@@ -16,9 +16,35 @@ using json = nlohmann::json;
 
 using namespace std;
 
+//////////////////////////////////////////////////////////////
+//to pomiędzy komentarzami potem będzie do przeniesiena do osobnych plików
+//narazie zrobiłem bigos żeby sprawdzić czy działa :)
+
+std::map<std::string, std::vector<float>> readCoordinatesFromJSON(const std::string& filename) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Nie można otworzyć pliku." << std::endl;
+        return {};
+    }
+
+    json jsonData;
+    file >> jsonData;
+
+    std::map<std::string, std::vector<float>> coordinates;
+
+    for (const auto& entry : jsonData.items()) {
+        std::string location = entry.key();
+        std::vector<float> coords = entry.value().get<std::vector<float>>();
+        coordinates[location] = coords;
+    }
+
+    return coordinates;
+}
 
 
 
+//////////////////////////////////////////////////////////////
 
 string prepare_string(string line){
     string data;
@@ -193,6 +219,19 @@ void distanceOnStart(int &distance_on_start){
 
 int32_t main(int argc, char *argv[])
 {
+
+    std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
+
+    //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
+    //jako robocze tylko do podglądu.
+    for (const auto& city : coordinates) {
+        std::cout << "Współrzędne dla " << city.first << ": ";
+        for (const auto& coord : city.second) {
+            std::cout << coord << " ";
+        }
+        std::cout << std::endl;
+    }
+
     ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
     string line;
 
