@@ -34,10 +34,10 @@ string Find_Train_by_Distance(float current_distance){
     readDistances(distance);
 
     for( size_t i=0; i<route.size(); i++ ) {
-        if (current_distance >= distance[i]  &&  current_distance <= distance[i]+1000){
+        if (current_distance >= distance[i]-200  &&  current_distance <= distance[i]+200){
             return route[i];
         }
-        else if (current_distance >= distance[i]+1000  &&  current_distance <= distance[i+1]) {
+        else if (current_distance >= distance[i]+200  &&  current_distance <= distance[i+1]-200 ) {
             return route[i] + " -> " + route[i+1];
         }
     }
