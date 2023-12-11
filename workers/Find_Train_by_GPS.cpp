@@ -37,15 +37,15 @@ void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vec
     dist=dist/1000;
     if(state == 0 && dist<500){
         state = 1;
-        cout<<"\nBy GPS: Zblianie sie do stacji: "<<route.at(currentStation)<<endl;
+        cout<<"\n\nBy GPS: Zblianie sie do stacji: "<<route.at(currentStation)<<endl<<endl;
     }
     else if(state == 1 && dist<150){
         state = 2;
-        cout<<"\nBy GPS:Na stacji:"<<route.at(currentStation)<<endl;
+        cout<<"\n\nBy GPS:Na stacji:"<<route.at(currentStation)<<endl<<endl;
     }
     else if(state == 2 && dist>150){
         state =0;
-        cout<<"\nBy GPS: Opuszczono stacje:"<<route.at(currentStation)<<endl;
+        cout<<"\n\nBy GPS: Opuszczono stacje:"<<route.at(currentStation)<<endl<<endl;
         currentStation+=1;
     }
 }

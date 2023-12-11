@@ -194,13 +194,13 @@ int32_t main(int argc, char *argv[])
         getCoords(data, x, y, distance_from_start);
         //żeby nie wypisywać kilka razy danych z tego samego miejsca (gdy pociąg stoi na stacji, często na trasie reportuje 2 razy to samo)
         current_distance = (distance_from_start - distance_on_start);
-        if (current_distance != current_distance_prev){
+        // if (current_distance != current_distance_prev){
             cout << setprecision(8) << endl << "X: " << x << endl << "Y: " << y << endl;
             cout << "Distance from start: " << current_distance / 1000 << endl;
             cout << "Current location: " << Find_Train_by_Distance(current_distance) << endl;
             cout << "\n";
             //usleep(400000);
-        }
+        // }
         current_distance_prev = current_distance;
         if(firststation == -1){
             findFirstStation(x,y);
