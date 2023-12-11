@@ -13,7 +13,6 @@ using json = nlohmann::json;
 
 
 using namespace std;
-
 //////////////////////////////////////////////////////////////
 //to pomiędzy komentarzami potem będzie do przeniesiena do osobnych plików
 //narazie zrobiłem bigos żeby sprawdzić czy działa :)
