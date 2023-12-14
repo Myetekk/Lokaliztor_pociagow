@@ -1,33 +1,33 @@
-  Id: 69708  Name: Gliwice  Arr: 08:30  Dep: 08:30  GPS: [50.301003,18.677281]  OnDem: 0
-  Id: 69823  Name: Zabrze  Arr: 08:37  Dep: 08:38  GPS: [50.305304,18.787149]  OnDem: 0
-  Id: 69849  Name: Ruda Śląska  Arr: 08:41  Dep: 08:42  GPS: [50.315914,18.850833]  OnDem: 0
-  Id: 70607  Name: Ruda Chebzie  Arr: 08:44  Dep: 08:45  GPS: [50.303910,18.877792]  OnDem: 0
-  Id: 73148  Name: Świętochłowice  Arr: 08:48  Dep: 08:48  GPS: [50.289058,18.918200]  OnDem: 0
-  Id: 73106  Name: Chorzów Batory  Arr: 08:51  Dep: 08:52  GPS: [50.278354,18.944830]  OnDem: 0
-  Id: 73338  Name: Katowice Załęże  Arr: 08:55  Dep: 08:55  GPS: [50.263300,18.991300]  OnDem: 0
-  Id: 73312  Name: Katowice  Arr: 08:59  Dep: 09:12  GPS: [50.257700,19.016500]  OnDem: 0
-  Id: 73619  Name: Katowice Zawodzie  Arr: 09:16  Dep: 09:16  GPS: [50.257449,19.057304]  OnDem: 0
-  Id: 73650  Name: Katowice Szopienice Południowe  Arr: 09:19  Dep: 09:19  GPS: [50.259000,19.091700]  OnDem: 0
-  Id: 74658  Name: Sosnowiec Główny  Arr: 09:22  Dep: 09:23  GPS: [50.279100,19.126458]  OnDem: 0
-  Id: 74641  Name: Będzin  Arr: 09:26  Dep: 09:27  GPS: [50.309000,19.141400]  OnDem: 0
-  Id: 74633  Name: Będzin Miasto  Arr: 09:28  Dep: 09:29  GPS: [50.318900,19.135500]  OnDem: 0
-  Id: 74625  Name: Będzin Ksawera  Arr: 09:31  Dep: 09:32  GPS: [50.330600,19.158100]  OnDem: 0
-  Id: 74583  Name: Dąbrowa Górnicza  Arr: 09:34  Dep: 09:35  GPS: [50.330246,19.185365]  OnDem: 0
-  Id: 74567  Name: Dąbrowa Górnicza Gołonóg  Arr: 09:37  Dep: 09:38  GPS: [50.344000,19.226200]  OnDem: 0
-  Id: 74500  Name: Dąbrowa Górnicza Ząbkowice  Arr: 09:41  Dep: 09:42  GPS: [50.366513,19.264646]  OnDem: 0
-  Id: 74534  Name: Dąbrowa Górnicza Sikorka  Arr: 09:44  Dep: 09:45  GPS: [50.389000,19.298900]  OnDem: 0
-  Id: 75242  Name: Chruszczobród  Arr: 09:47  Dep: 09:47  GPS: [50.400060,19.328749]  OnDem: 0
-  Id: 75226  Name: Wiesiółka  Arr: 09:49  Dep: 09:50  GPS: [50.414900,19.349800]  OnDem: 0
-  Id: 75200  Name: Łazy  Arr: 09:53  Dep: 09:53  GPS: [50.430093,19.392019]  OnDem: 0
-  Id: 75309  Name: Zawiercie  Arr: 09:58  Dep: 09:59  GPS: [50.479855,19.423337]  OnDem: 0
-  Id: 75341  Name: Zawiercie Borowe Pole  Arr: 10:01  Dep: 10:02  GPS: [50.510900,19.398951]  OnDem: 0
-  Id: 75457  Name: Myszków Mrzygłód  Arr: 10:05  Dep: 10:05  GPS: [50.543503,19.377351]  OnDem: 0
-  Id: 75440  Name: Myszków Światowit  Arr: 10:07  Dep: 10:08  GPS: [50.565463,19.359495]  OnDem: 0
-  Id: 75424  Name: Myszków  Arr: 10:10  Dep: 10:11  GPS: [50.574110,19.329079]  OnDem: 0
-  Id: 75432  Name: Myszków Nowa Wieś  Arr: 10:14  Dep: 10:14  GPS: [50.594949,19.291260]  OnDem: 0
-  Id: 62752  Name: Żarki-Letnisko  Arr: 10:17  Dep: 10:17  GPS: [50.623616,19.272521]  OnDem: 0
-  Id: 62745  Name: Masłońskie Natalin  Arr: 10:20  Dep: 10:20  GPS: [50.650892,19.253827]  OnDem: 0
-  Id: 264927  Name: Poraj  Arr: 10:23  Dep: 10:24  GPS: [50.677160,19.218764]  OnDem: 0
-  Id: 62729  Name: Korwinów  Arr: 10:29  Dep: 10:29  GPS: [50.738404,19.176616]  OnDem: 0
-  Id: 62687  Name: Częstochowa Raków  Arr: 10:33  Dep: 10:34  GPS: [50.788000,19.155200]  OnDem: 0
-  Id: 62653  Name: Częstochowa  Arr: 10:38  Dep: 10:38  GPS: [50.808617,19.120918]  OnDem: 0
+  Id: 69708  Name: Gliwice  Arr: 08:30  Dep: 08:30  GPS: [50.301003,18.677281]  OnDem: 0  Rad: 500  TEST
+  Id: 69823  Name: Zabrze  Arr: 08:37  Dep: 08:38  GPS: [50.305304,18.787149]  OnDem: 0  Rad: 500
+  Id: 69849  Name: Ruda Śląska  Arr: 08:41  Dep: 08:42  GPS: [50.315914,18.850833]  OnDem: 0  Rad: 500
+  Id: 70607  Name: Ruda Chebzie  Arr: 08:44  Dep: 08:45  GPS: [50.303910,18.877792]  OnDem: 0  Rad: 500
+  Id: 73148  Name: Świętochłowice  Arr: 08:48  Dep: 08:48  GPS: [50.289058,18.918200]  OnDem: 0  Rad: 500
+  Id: 73106  Name: Chorzów Batory  Arr: 08:51  Dep: 08:52  GPS: [50.278354,18.944830]  OnDem: 0  Rad: 500
+  Id: 73338  Name: Katowice Załęże  Arr: 08:55  Dep: 08:55  GPS: [50.263300,18.991300]  OnDem: 0  Rad: 500
+  Id: 73312  Name: Katowice  Arr: 08:59  Dep: 09:12  GPS: [50.257700,19.016500]  OnDem: 0  Rad: 500
+  Id: 73619  Name: Katowice Zawodzie  Arr: 09:16  Dep: 09:16  GPS: [50.257449,19.057304]  OnDem: 0  Rad: 500
+  Id: 73650  Name: Katowice Szopienice Południowe  Arr: 09:19  Dep: 09:19  GPS: [50.259000,19.091700]  OnDem: 0  Rad: 500
+  Id: 74658  Name: Sosnowiec Główny  Arr: 09:22  Dep: 09:23  GPS: [50.279100,19.126458]  OnDem: 0  Rad: 500
+  Id: 74641  Name: Będzin  Arr: 09:26  Dep: 09:27  GPS: [50.309000,19.141400]  OnDem: 0  Rad: 350
+  Id: 74633  Name: Będzin Miasto  Arr: 09:28  Dep: 09:29  GPS: [50.318900,19.135500]  OnDem: 0  Rad: 350
+  Id: 74625  Name: Będzin Ksawera  Arr: 09:31  Dep: 09:32  GPS: [50.330600,19.158100]  OnDem: 0  Rad: 500
+  Id: 74583  Name: Dąbrowa Górnicza  Arr: 09:34  Dep: 09:35  GPS: [50.330246,19.185365]  OnDem: 0  Rad: 500
+  Id: 74567  Name: Dąbrowa Górnicza Gołonóg  Arr: 09:37  Dep: 09:38  GPS: [50.344000,19.226200]  OnDem: 0  Rad: 500
+  Id: 74500  Name: Dąbrowa Górnicza Ząbkowice  Arr: 09:41  Dep: 09:42  GPS: [50.366513,19.264646]  OnDem: 0  Rad: 500
+  Id: 74534  Name: Dąbrowa Górnicza Sikorka  Arr: 09:44  Dep: 09:45  GPS: [50.389000,19.298900]  OnDem: 0  Rad: 500
+  Id: 75242  Name: Chruszczobród  Arr: 09:47  Dep: 09:47  GPS: [50.400060,19.328749]  OnDem: 0  Rad: 500
+  Id: 75226  Name: Wiesiółka  Arr: 09:49  Dep: 09:50  GPS: [50.414900,19.349800]  OnDem: 0  Rad: 500
+  Id: 75200  Name: Łazy  Arr: 09:53  Dep: 09:53  GPS: [50.430093,19.392019]  OnDem: 0  Rad: 500
+  Id: 75309  Name: Zawiercie  Arr: 09:58  Dep: 09:59  GPS: [50.479855,19.423337]  OnDem: 0  Rad: 500
+  Id: 75341  Name: Zawiercie Borowe Pole  Arr: 10:01  Dep: 10:02  GPS: [50.510900,19.398951]  OnDem: 0  Rad: 500
+  Id: 75457  Name: Myszków Mrzygłód  Arr: 10:05  Dep: 10:05  GPS: [50.543503,19.377351]  OnDem: 0  Rad: 500
+  Id: 75440  Name: Myszków Światowit  Arr: 10:07  Dep: 10:08  GPS: [50.565463,19.359495]  OnDem: 0  Rad: 500
+  Id: 75424  Name: Myszków  Arr: 10:10  Dep: 10:11  GPS: [50.574110,19.329079]  OnDem: 0  Rad: 500
+  Id: 75432  Name: Myszków Nowa Wieś  Arr: 10:14  Dep: 10:14  GPS: [50.594949,19.291260]  OnDem: 0  Rad: 500
+  Id: 62752  Name: Żarki-Letnisko  Arr: 10:17  Dep: 10:17  GPS: [50.623616,19.272521]  OnDem: 0  Rad: 500
+  Id: 62745  Name: Masłońskie Natalin  Arr: 10:20  Dep: 10:20  GPS: [50.650892,19.253827]  OnDem: 0  Rad: 500
+  Id: 264927  Name: Poraj  Arr: 10:23  Dep: 10:24  GPS: [50.677160,19.218764]  OnDem: 0  Rad: 500
+  Id: 62729  Name: Korwinów  Arr: 10:29  Dep: 10:29  GPS: [50.738404,19.176616]  OnDem: 0  Rad: 500
+  Id: 62687  Name: Częstochowa Raków  Arr: 10:33  Dep: 10:34  GPS: [50.788000,19.155200]  OnDem: 0  Rad: 500
+  Id: 62653  Name: Częstochowa  Arr: 10:38  Dep: 10:38  GPS: [50.808617,19.120918]  OnDem: 0  Rad: 500

@@ -11,6 +11,7 @@
 #include "nlohman/json.hpp"
 using json = nlohmann::json;
 using namespace std;
+
 //////////////////////////////////////////////////////////////
 //to pomiędzy komentarzami potem będzie do przeniesiena do osobnych plików
 //narazie zrobiłem bigos żeby sprawdzić czy działa :)
@@ -142,24 +143,26 @@ void distanceOnStart(int &distance_on_start){
     distance_on_start = distance_on_start_temp;
 }
 void getStatsInfoFromLine(map<string,vector<float>>& stations,string line,vector<string>& namesOfStations){ //Function processing file containg information about stations
-        vector<float> test;
+        vector<float> temp;
+        string radius;
         string coords = line.substr(line.find('[')+1,line.find(']')-line.find('[')-1);
-        test.push_back(stof(coords.substr(0,coords.find(","))));
-        test.push_back(stof(coords.substr(coords.find(",")+1)));
+        temp.push_back(stof(coords.substr(0,coords.find(","))));
+        temp.push_back(stof(coords.substr(coords.find(",")+1)));
+        int radPos;
+        radPos =line.find("Rad: ")+5;
+        radius = line.substr(radPos,line.find("  ",radPos)-radPos);
+        temp.push_back(stof(radius));
         int nameposition = line.find("Name:");
         string stationName = line.substr(line.find("Name:")+6,line.find("  ",6+nameposition)-6-nameposition);
-        stations.insert(make_pair(stationName,test));
+        stations.insert(make_pair(stationName,temp));
         namesOfStations.push_back(stationName);
 }
 void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,vector<string>& namesOfStationsTest){
     ifstream f("train_data/Gliwice_Czestochowa_stats.txt");
     string line;
     while(getline(f,line)){
-        std::cout<<1;
         getStatsInfoFromLine(coordinates1,line,namesOfStationsTest);
     }
-
-
 }
 int32_t main(int argc, char *argv[])
 {   
@@ -167,12 +170,9 @@ int32_t main(int argc, char *argv[])
     //readStationsM(route);
     std::map<std::string, std::vector<float>> coordinates;
     getStatsFromFile(coordinates,route);
-    vector<string> namesOfStationsTest;
     //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
-
     //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
     //jako robocze tylko do podglądu.
-
     for (const auto& city : coordinates) {
         std::cout << "Współrzędne dla " << city.first << ": ";
         for (const auto& coord : city.second) {
@@ -180,7 +180,6 @@ int32_t main(int argc, char *argv[])
         }
         std::cout << std::endl;
     }
-
     ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
     string line;
     float x,y;
@@ -211,7 +210,6 @@ int32_t main(int argc, char *argv[])
         if(firststation == -1){
             findFirstStation(x,y);
         }
-
         //usleep(500000);
         Find_Train_by_GPS(x,y,state,coordinates,currentStation,route);
     }
