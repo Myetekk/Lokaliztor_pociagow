@@ -1,4 +1,4 @@
-  Id: 69708  Name: Gliwice  Arr: 08:30  Dep: 08:30  GPS: [50.301003,18.677281]  OnDem: 0  Rad: 500  TEST
+  Id: 69708  Name: Gliwice  Arr: 08:30  Dep: 08:30  GPS: [50.301003,18.677281]  OnDem: 0  Rad: 500
   Id: 69823  Name: Zabrze  Arr: 08:37  Dep: 08:38  GPS: [50.305304,18.787149]  OnDem: 0  Rad: 500
   Id: 69849  Name: Ruda Śląska  Arr: 08:41  Dep: 08:42  GPS: [50.315914,18.850833]  OnDem: 0  Rad: 500
   Id: 70607  Name: Ruda Chebzie  Arr: 08:44  Dep: 08:45  GPS: [50.303910,18.877792]  OnDem: 0  Rad: 500

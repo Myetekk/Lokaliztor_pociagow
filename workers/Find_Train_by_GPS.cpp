@@ -30,14 +30,19 @@ int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t 
     return (int32_t)Result::SUCCESS;
 }
 
-void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vector<float>>& coordinates,int& currentStation,std::vector<std::string>& route){
+void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vector<float>>& statsDetails,int& currentStation,std::vector<std::string>& route){
     int64_t dist;
-    //std::cout<<"coordinatesX: "<< x <<"Y:"<<y<<"Map0:"<<coordinates.at("Gliwice").at(0)<<"Map1:"<<coordinates.at("Gliwice").at(1);
-    distanceCal(x,y,coordinates.at(route.at(currentStation)).at(0),coordinates.at(route.at(currentStation)).at(1),&dist);
+
+    //std::cout<<"coordinatesX: "<< x <<"Y:"<<y<<"Map0:"<<statsDetails.at("Gliwice").at(0)<<"Map1:"<<statsDetails.at("Gliwice").at(1);
+    distanceCal(x,y,statsDetails.at(route.at(currentStation)).at(0),statsDetails.at(route.at(currentStation)).at(1),&dist);
     dist=dist/1000;
-    if(state == 0 && dist<500){
+    int radiusMargin = statsDetails.at(route.at(currentStation)).at(2);
+    if(state == 0 && dist<radiusMargin){
         state = (int32_t)State::APROACHINGSTATION;
         cout<<"\n\nBy GPS: Zblianie sie do stacji: "<<route.at(currentStation)<<endl<<endl;
+    }
+    else if(state==1&&dist>radiusMargin*2){
+        state = (int32_t)State::BEFORESTATION;
     }
     else if(state == 1 && dist<150){
         state = (int32_t)State::ONSTATON;

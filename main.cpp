@@ -213,8 +213,5 @@ int32_t main(int argc, char *argv[])
         //usleep(500000);
         Find_Train_by_GPS(x,y,state,coordinates,currentStation,route);
     }
-
-
-
     return 0;
 }
