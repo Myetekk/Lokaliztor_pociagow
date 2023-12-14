@@ -10,13 +10,10 @@
 #include "utils/netfunctions.h"
 #include "nlohman/json.hpp"
 using json = nlohmann::json;
-
-
 using namespace std;
 //////////////////////////////////////////////////////////////
 //to pomiędzy komentarzami potem będzie do przeniesiena do osobnych plików
 //narazie zrobiłem bigos żeby sprawdzić czy działa :)
-
 std::map<std::string, std::vector<float>> readCoordinatesFromJSON(const std::string& filename) {
     std::ifstream file(filename);
 
@@ -38,11 +35,7 @@ std::map<std::string, std::vector<float>> readCoordinatesFromJSON(const std::str
 
     return coordinates;
 }
-
-
-
 //////////////////////////////////////////////////////////////
-
 string prepare_string(string line){
     string data;
 
@@ -53,11 +46,6 @@ string prepare_string(string line){
 
     return data;
 }
-
-
-
-
-
 array<string, 3> extract_info(int info_index){
     std::ifstream infile("train_data/data_instrukcja.json");
     json data = json::parse(infile);  // parse json
@@ -118,11 +106,6 @@ void transform_info(string data, string info_name, int info_pos, int info_len,fl
         // fprintf(stderr, "%s: %f \n", info_name.c_str(), f);
     }
 }
-
-
-
-
-
 void getCoords(string data, float& x, float& y, int& distance){
     //reading latitude from file
     float distance_temp;
@@ -158,14 +141,38 @@ void distanceOnStart(int &distance_on_start){
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]), distance_on_start_temp);
     distance_on_start = distance_on_start_temp;
 }
+void getStatsInfoFromLine(map<string,vector<float>>& stations,string line,vector<string>& namesOfStations){ //Function processing file containg information about stations
+        vector<float> test;
+        string coords = line.substr(line.find('[')+1,line.find(']')-line.find('[')-1);
+        test.push_back(stof(coords.substr(0,coords.find(","))));
+        test.push_back(stof(coords.substr(coords.find(",")+1)));
+        int nameposition = line.find("Name:");
+        string stationName = line.substr(line.find("Name:")+6,line.find("  ",6+nameposition)-6-nameposition);
+        stations.insert(make_pair(stationName,test));
+        namesOfStations.push_back(stationName);
+}
+void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,vector<string>& namesOfStationsTest){
+    ifstream f("train_data/Gliwice_Czestochowa_stats.txt");
+    string line;
+    while(getline(f,line)){
+        std::cout<<1;
+        getStatsInfoFromLine(coordinates1,line,namesOfStationsTest);
+    }
+
+
+}
 int32_t main(int argc, char *argv[])
-{
+{   
     vector<string> route;
-    readStationsM(route);
-    std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
+    //readStationsM(route);
+    std::map<std::string, std::vector<float>> coordinates;
+    getStatsFromFile(coordinates,route);
+    vector<string> namesOfStationsTest;
+    //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
 
     //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
     //jako robocze tylko do podglądu.
+
     for (const auto& city : coordinates) {
         std::cout << "Współrzędne dla " << city.first << ": ";
         for (const auto& coord : city.second) {
