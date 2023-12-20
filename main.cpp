@@ -11,7 +11,13 @@
 #include "nlohman/json.hpp"
 using json = nlohmann::json;
 using namespace std;
-
+string statsFile = "train_data/Gliwice_Czestochowa_stats.txt";
+std::string iface = "enp0s3";
+struct sockaddr_in resp;
+socklen_t slen = 0;
+int32_t port = 30100;
+int32_t client = 0;
+std::string ipb;
 //////////////////////////////////////////////////////////////
 //to pomiędzy komentarzami potem będzie do przeniesiena do osobnych plików
 //narazie zrobiłem bigos żeby sprawdzić czy działa :)
@@ -158,7 +164,7 @@ void getStatsInfoFromLine(map<string,vector<float>>& stations,string line,vector
         namesOfStations.push_back(stationName);
 }
 void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,vector<string>& namesOfStationsTest){
-    ifstream f("train_data/Gliwice_Czestochowa_stats.txt");
+    ifstream f(statsFile);
     string line;
     while(getline(f,line)){
         getStatsInfoFromLine(coordinates1,line,namesOfStationsTest);
@@ -166,6 +172,8 @@ void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,ve
 }
 int32_t main(int argc, char *argv[])
 {   
+    char* buff = new char[300];
+    int32_t mass;
     vector<string> route;
     //readStationsM(route);
     std::map<std::string, std::vector<float>> coordinates;
@@ -173,6 +181,13 @@ int32_t main(int argc, char *argv[])
     //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
     //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
     //jako robocze tylko do podglądu.
+    //Receiving data through network 
+    //ipb = getIfBroadcastAddr(iface);
+    //startReceiving(client,ipb,port);
+    //while(1==1){
+    //mass=recvfrom(client,buff,3000,0,(struct sockaddr *)&resp,&slen);
+    //std::cout<<buff<<endl;}
+    //
     for (const auto& city : coordinates) {
         std::cout << "Współrzędne dla " << city.first << ": ";
         for (const auto& coord : city.second) {
