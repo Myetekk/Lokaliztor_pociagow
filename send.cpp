@@ -4,8 +4,6 @@
 #include "utils/netfunctions.h"
 using namespace std;
 
-using namespace std;
-
 int32_t main(int argc, char *argv[])
 {   
     //do przeniesienia jako argumenty!!!
