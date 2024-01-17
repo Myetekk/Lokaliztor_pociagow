@@ -1,14 +1,5 @@
-#include <iostream>
-#include <unistd.h>
-#include <string>
-#include <inttypes.h>
-#include <algorithm>
-#include <fstream>
-#include <iomanip>
-
 #include "Find_Train_by_Distance.h"
-#include "../utils/netfunctions.h"
-#include "../nlohman/json.hpp"
+
 using json = nlohmann::json;
 
 using namespace std;
@@ -25,14 +16,20 @@ void readDistances(vector<int>& distance){
     json distance_json = json::parse(file_distance);
     distance = distance_json.get<vector<int>>();
 }
-string Find_Train_by_Distance(float current_distance,vector<string>& route){
+int getIndexOfFirstStation(float current_distance,vector<int>& distances){
+    if(current_distance==0) return 0;
+    int n=distances.size();
+    int i=0;
+    while (i<n){
+        if(current_distance<=distances[i]) return i;
+        i++;
+    }
+    return 0;
+
+}
+string Find_Train_by_Distance(float current_distance,vector<string>& route,vector<int>& distance){
     string current_location;
-
-    vector<int> distance;
-
-    readStations(route);
-    readDistances(distance);
-
+    //vector<int> distance;
     for( size_t i=0; i<route.size(); i++ ) {
         if (current_distance >= distance[i]-200  &&  current_distance <= distance[i]+200){
             return route[i];

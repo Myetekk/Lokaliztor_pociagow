@@ -169,8 +169,10 @@ int32_t main(int argc, char *argv[])
     char* buff = new char[300];
     int32_t mass;
     vector<string> route;
+    vector<int> distances;
     std::map<std::string, std::vector<float>> coordinates;
     getStatsFromFile(coordinates,route);
+    readDistances(distances);
     //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
     //Receiving data through network 
     //ipb = getIfBroadcastAddr(iface);
@@ -207,10 +209,13 @@ int32_t main(int argc, char *argv[])
         getCoords(data, x, y, distance_from_start);
         //żeby nie wypisywać kilka razy danych z tego samego miejsca (gdy pociąg stoi na stacji, często na trasie reportuje 2 razy to samo)
         current_distance = (distance_from_start - distance_on_start);
+        if(firststation==-1){
+            firststation=getIndexOfFirstStation(current_distance,distances);
+        }
         // if (current_distance != current_distance_prev){
             cout << setprecision(8) << endl << "X: " << x << endl << "Y: " << y << endl;
             cout << "Distance from start: " << current_distance / 1000 << endl;
-            cout << "Current location: " << Find_Train_by_Distance(current_distance,route) << endl;
+            cout << "Current location: " << Find_Train_by_Distance(current_distance,route,distances) << endl;
             cout << "\n";
             //usleep(400000);
         // }
