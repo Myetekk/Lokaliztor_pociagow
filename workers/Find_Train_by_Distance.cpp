@@ -25,9 +25,9 @@ void readDistances(vector<int>& distance){
     json distance_json = json::parse(file_distance);
     distance = distance_json.get<vector<int>>();
 }
-string Find_Train_by_Distance(float current_distance){
+string Find_Train_by_Distance(float current_distance,vector<string>& route){
     string current_location;
-    vector<string> route;
+
     vector<int> distance;
 
     readStations(route);

@@ -129,12 +129,6 @@ void getCoords(string data, float& x, float& y, int& distance){
 int findFirstStation(float& x,float& y){
     return 0;
 }
-//Reading routes from file
-void readStationsM(vector<string>& route){
-    fstream file_route("train_data/route.json");
-    json route_json = json::parse(file_route);
-    route = route_json.get<vector<string>>();
-}
 // Reading train's distance on the begining of the run
 void distanceOnStart(int &distance_on_start){
     float distance_on_start_temp;
@@ -175,12 +169,9 @@ int32_t main(int argc, char *argv[])
     char* buff = new char[300];
     int32_t mass;
     vector<string> route;
-    //readStationsM(route);
     std::map<std::string, std::vector<float>> coordinates;
     getStatsFromFile(coordinates,route);
     //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
-    //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
-    //jako robocze tylko do podglądu.
     //Receiving data through network 
     //ipb = getIfBroadcastAddr(iface);
     //startReceiving(client,ipb,port);
@@ -188,6 +179,8 @@ int32_t main(int argc, char *argv[])
     //mass=recvfrom(client,buff,3000,0,(struct sockaddr *)&resp,&slen);
     //std::cout<<buff<<endl;}
     //
+    //pętla do wyświetlania wszystkich miast z mapy i ich współrzędnych 
+    //jako robocze tylko do podglądu.
     for (const auto& city : coordinates) {
         std::cout << "Współrzędne dla " << city.first << ": ";
         for (const auto& coord : city.second) {
@@ -217,7 +210,7 @@ int32_t main(int argc, char *argv[])
         // if (current_distance != current_distance_prev){
             cout << setprecision(8) << endl << "X: " << x << endl << "Y: " << y << endl;
             cout << "Distance from start: " << current_distance / 1000 << endl;
-            cout << "Current location: " << Find_Train_by_Distance(current_distance) << endl;
+            cout << "Current location: " << Find_Train_by_Distance(current_distance,route) << endl;
             cout << "\n";
             //usleep(400000);
         // }

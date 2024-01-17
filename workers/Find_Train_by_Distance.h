@@ -8,6 +8,6 @@
 
 using namespace std;
 
-string Find_Train_by_Distance(float current_distance);
+string Find_Train_by_Distance(float current_distance,vector<string>& route);
 
 #endif
