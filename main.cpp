@@ -126,9 +126,6 @@ void getCoords(string data, float& x, float& y, int& distance){
     transform_info(data, current_info[0], stoi(current_info[1]), stoi(current_info[2]),distance_temp);
     distance = distance_temp;
 }
-int findFirstStation(float& x,float& y){
-    return 0;
-}
 // Reading train's distance on the begining of the run
 void distanceOnStart(int &distance_on_start){
     float distance_on_start_temp;
@@ -164,6 +161,19 @@ void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,ve
         getStatsInfoFromLine(coordinates1,line,namesOfStationsTest);
     }
 }
+
+ //Reading distance from file if temp file is created
+ //If temp file is not created, saving distance_on_start to new temp file (in case if program is stopped in middle of train's route)
+void readOrSaveDistanceToFile(int& distance_on_start){
+    ifstream temp;
+    temp.open("temp.txt");
+    if(temp){
+        temp>>distance_on_start;
+    }else{ 
+        ofstream tempSave("temp.txt");
+        tempSave<<distance_on_start;
+    }
+}
 int32_t main(int argc, char *argv[])
 {   
     char* buff = new char[300];
@@ -194,13 +204,15 @@ int32_t main(int argc, char *argv[])
     string line;
     float x,y;
     int distance_from_start;
-    int distance_on_start;
-    float current_distance = (distance_from_start - distance_on_start);
+    int distance_on_start=-1;
+    float current_distance;
     float current_distance_prev = -1;
     int firststation = -1;
-    int state = 0;
+    int stateGPS = 0;
     int currentStation = 0;
     distanceOnStart(distance_on_start);
+    readOrSaveDistanceToFile(distance_on_start);
+
     while (!readFromFile.eof())
     {
         getline(readFromFile,line);
@@ -220,11 +232,8 @@ int32_t main(int argc, char *argv[])
             //usleep(400000);
         // }
         current_distance_prev = current_distance;
-        if(firststation == -1){
-            findFirstStation(x,y);
-        }
         //usleep(500000);
-        Find_Train_by_GPS(x,y,state,coordinates,currentStation,route);
+        Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route);
     }
     return 0;
 }
