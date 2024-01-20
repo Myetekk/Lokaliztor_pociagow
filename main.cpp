@@ -235,5 +235,11 @@ int32_t main(int argc, char *argv[])
         //usleep(500000);
         Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route);
     }
+
+    if (remove("temp.txt") == 0)
+        printf("temp file deleted successfully");
+    else
+        printf("Unable to delete the temp file");
+
     return 0;
 }
