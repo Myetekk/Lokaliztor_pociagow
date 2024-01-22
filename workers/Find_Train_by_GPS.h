@@ -9,7 +9,9 @@
 #include <map>
 #include <vector>
 #include <cmath>
-void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vector<float>>& coordinates,int& currentStation,std::vector<std::string>& route);
+#include <iomanip>
+
+void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vector<float>>& coordinates,int& currentStation,std::vector<std::string>& route, bool& GPS_OK);
 //enum class ResultS {SUCCESS=0x0};
 enum class State{BEFORESTATION=0x0,APROACHINGSTATION=0X1,ONSTATON=0X2};
 

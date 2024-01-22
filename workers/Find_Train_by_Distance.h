@@ -17,7 +17,7 @@
 
 using namespace std;
 
-string Find_Train_by_Distance(float current_distance,vector<string>& route,vector<int>& distance);
+void Find_Train_by_Distance(float x,float y,string& stateDist,float current_distance,vector<string> route,vector<int> distance);
 int getIndexOfFirstStation(float current_distance,vector<int>& distance);
 void readDistances(vector<int>& distance);
 #endif

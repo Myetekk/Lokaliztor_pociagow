@@ -127,10 +127,10 @@ void getCoords(string data, float& x, float& y, int& distance){
     distance = distance_temp;
 }
 // Reading train's distance on the begining of the run
-void distanceOnStart(int &distance_on_start){
+void distanceOnStart(int &distance_on_start, string filePath){
     float distance_on_start_temp;
 
-    ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
+    ifstream readFromFile(filePath);
     string line;
     getline(readFromFile,line);
     string data = prepare_string(line);
@@ -154,7 +154,7 @@ void getStatsInfoFromLine(map<string,vector<float>>& stations,string line,vector
         stations.insert(make_pair(stationName,temp));
         namesOfStations.push_back(stationName);
 }
-void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,vector<string>& namesOfStationsTest){
+void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1, vector<string>& namesOfStationsTest){
     ifstream f(statsFile);
     string line;
     while(getline(f,line)){
@@ -162,8 +162,8 @@ void getStatsFromFile(std::map<std::string, std::vector<float>>& coordinates1,ve
     }
 }
 
- //Reading distance from file if temp file is created
- //If temp file is not created, saving distance_on_start to new temp file (in case if program is stopped in middle of train's route)
+//Reading distance from file if temp file is created
+//If temp file is not created, saving distance_on_start to new temp file (in case if program is stopped in middle of train's route)
 void readOrSaveDistanceToFile(int& distance_on_start){
     ifstream temp;
     temp.open("temp.txt");
@@ -200,17 +200,22 @@ int32_t main(int argc, char *argv[])
         }
         std::cout << std::endl;
     }
-    ifstream readFromFile("train_data/2022_07_22_08_10_Gliwice_Czestochowa_data");
+    
+    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
+    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
+    ifstream readFromFile(filePath);
     string line;
     float x,y;
     int distance_from_start;
     int distance_on_start=-1;
     float current_distance;
-    float current_distance_prev = -1;
     int firststation = -1;
     int stateGPS = 0;
+    string stateDist;
+    bool GPS_OK = false;
     int currentStation = 0;
-    distanceOnStart(distance_on_start);
+
+    distanceOnStart(distance_on_start, filePath);
     readOrSaveDistanceToFile(distance_on_start);
 
     while (!readFromFile.eof())
@@ -219,21 +224,13 @@ int32_t main(int argc, char *argv[])
         string data = prepare_string(line);
         //reading coords, and distance from file
         getCoords(data, x, y, distance_from_start);
-        //żeby nie wypisywać kilka razy danych z tego samego miejsca (gdy pociąg stoi na stacji, często na trasie reportuje 2 razy to samo)
         current_distance = (distance_from_start - distance_on_start);
         if(firststation==-1){
             firststation=getIndexOfFirstStation(current_distance,distances);
         }
-        // if (current_distance != current_distance_prev){
-            cout << setprecision(8) << endl << "X: " << x << endl << "Y: " << y << endl;
-            cout << "Distance from start: " << current_distance / 1000 << endl;
-            cout << "Current location: " << Find_Train_by_Distance(current_distance,route,distances) << endl;
-            cout << "\n";
-            //usleep(400000);
-        // }
-        current_distance_prev = current_distance;
-        //usleep(500000);
-        Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route);
+
+        Find_Train_by_Distance(x,y,stateDist,current_distance,route,distances);
+        Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route,GPS_OK);
     }
 
     if (remove("temp.txt") == 0)

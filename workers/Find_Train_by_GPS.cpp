@@ -12,6 +12,8 @@ double deg2rad(double deg) {
 double rad2deg(double rad) {
   return (rad * 180 / MATH_PI);
 }
+
+//  calculates distance between points [lat1,lon1] and [lat2,lon2]
 int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t *odist)
 {
     if ((lat1 == lat2) && (lon1 == lon2))
@@ -30,27 +32,57 @@ int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t 
     return (int32_t)Result::SUCCESS;
 }
 
-void Find_Train_by_GPS(float x, float y,int& state,std::map<std::string,std::vector<float>>& statsDetails,int& currentStation,std::vector<std::string>& route){
+//  finds the closest station to the current location (executed only once on start of the program)
+void findCurrentStation(float x, float y, std::map<std::string, std::vector<float>>& statsDetails, int& currentStation, std::vector<std::string>& route, bool& GPS_OK) {
+    int64_t dist;
+    int64_t minimal_dist = 100000000;
+    for (int i=0; i<route.size(); i++) { 
+        distanceCal(x, y, statsDetails.at(route.at(i)).at(0), statsDetails.at(route.at(i)).at(1), &dist);
+        if (dist < minimal_dist){
+            minimal_dist = dist;
+            currentStation = i;
+        }
+    }
+    GPS_OK = true;
+}
+
+//  locates the train by the GPS coordinates
+void Find_Train_by_GPS(float x, float y, int& state, std::map<std::string, std::vector<float>>& statsDetails, int& currentStation, std::vector<std::string>& route, bool& GPS_OK){
     int64_t dist;
 
+    if (!GPS_OK){
+        findCurrentStation(x, y, statsDetails, currentStation, route, GPS_OK);
+    }
     //std::cout<<"coordinatesX: "<< x <<"Y:"<<y<<"Map0:"<<statsDetails.at("Gliwice").at(0)<<"Map1:"<<statsDetails.at("Gliwice").at(1);
-    distanceCal(x,y,statsDetails.at(route.at(currentStation)).at(0),statsDetails.at(route.at(currentStation)).at(1),&dist);
+    distanceCal(x, y, statsDetails.at(route.at(currentStation)).at(0), statsDetails.at(route.at(currentStation)).at(1), &dist);
     dist=dist/1000;
     int radiusMargin = statsDetails.at(route.at(currentStation)).at(2);
     if(state == 0 && dist<radiusMargin){
         state = (int32_t)State::APROACHINGSTATION;
-        cout<<"\n\nBy GPS: Zblianie sie do stacji: "<<route.at(currentStation)<<endl<<endl;
+        cout << "BY GPS: \n";
+        cout << setprecision(8) << x << " " << y << "\n";
+        cout<<"Zblianie sie do stacji: "<<route.at(currentStation)<<endl<<endl;
     }
-    else if(state==1&&dist>radiusMargin*2){
+    else if(state == 1  &&  dist > radiusMargin*2){
         state = (int32_t)State::BEFORESTATION;
     }
     else if(state == 1 && dist<150){
         state = (int32_t)State::ONSTATON;
-        cout<<"\n\nBy GPS:Na stacji:"<<route.at(currentStation)<<endl<<endl;
+        cout << "BY GPS: \n";
+        cout << setprecision(8) << x << " " << y << "\n";
+        cout<<"Na stacji: "<<route.at(currentStation)<<endl<<endl;
     }
     else if(state == 2 && dist>150){
         state =(int32_t)State::BEFORESTATION;
-        cout<<"\n\nBy GPS: Opuszczono stacje:"<<route.at(currentStation)<<endl<<endl;
+        cout << "BY GPS: \n";
+        cout << setprecision(8) << x << " " << y << "\n";
+        cout<<"Opuszczono stacje: "<<route.at(currentStation)<<"  Następna stacja: "<<route.at(currentStation+1)<<endl<<endl;
         currentStation+=1;
     }
+
+
+
+    // cout << "\n\n state:" << state << "\n\n";
+
+
 }
