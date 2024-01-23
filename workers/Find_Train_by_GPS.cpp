@@ -33,26 +33,26 @@ int32_t distanceCal(double lat1, double lon1, double lat2, double lon2, int64_t 
 }
 
 //  finds the closest station to the current location (executed only once on start of the program)
-void findCurrentStation(float x, float y, std::map<std::string, std::vector<float>>& statsDetails, int& currentStation, std::vector<std::string>& route, bool& GPS_OK) {
-    int64_t dist;
-    int64_t minimal_dist = 100000000;
-    for (int i=0; i<route.size(); i++) { 
-        distanceCal(x, y, statsDetails.at(route.at(i)).at(0), statsDetails.at(route.at(i)).at(1), &dist);
-        if (dist < minimal_dist){
-            minimal_dist = dist;
+void findCurrentStation(float x, float y, int& currentStation,  float current_distance, vector<string> route, vector<int> distance) {
+
+    for (int i=0; i<route.size()-1; i++) { 
+
+        if (current_distance >= distance[i]-300  &&  current_distance <= distance[i]+300){
             currentStation = i;
+            break;
+        }
+        else if (current_distance > distance[i]+300  &&  current_distance < distance[i+1]-300){
+            currentStation = i+1;
+            break;
         }
     }
-    GPS_OK = true;
+
 }
 
 //  locates the train by the GPS coordinates
 void Find_Train_by_GPS(float x, float y, int& state, std::map<std::string, std::vector<float>>& statsDetails, int& currentStation, std::vector<std::string>& route, bool& GPS_OK){
     int64_t dist;
 
-    if (!GPS_OK){
-        findCurrentStation(x, y, statsDetails, currentStation, route, GPS_OK);
-    }
     //std::cout<<"coordinatesX: "<< x <<"Y:"<<y<<"Map0:"<<statsDetails.at("Gliwice").at(0)<<"Map1:"<<statsDetails.at("Gliwice").at(1);
     distanceCal(x, y, statsDetails.at(route.at(currentStation)).at(0), statsDetails.at(route.at(currentStation)).at(1), &dist);
     dist=dist/1000;

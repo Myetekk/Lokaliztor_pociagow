@@ -201,8 +201,8 @@ int32_t main(int argc, char *argv[])
         std::cout << std::endl;
     }
     
-    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
-    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
+    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
+    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
     ifstream readFromFile(filePath);
     string line;
     float x,y;
@@ -218,6 +218,7 @@ int32_t main(int argc, char *argv[])
     distanceOnStart(distance_on_start, filePath);
     readOrSaveDistanceToFile(distance_on_start);
 
+
     while (!readFromFile.eof())
     {
         getline(readFromFile,line);
@@ -227,6 +228,11 @@ int32_t main(int argc, char *argv[])
         current_distance = (distance_from_start - distance_on_start);
         if(firststation==-1){
             firststation=getIndexOfFirstStation(current_distance,distances);
+        }
+
+        if (!GPS_OK){
+            findCurrentStation(x, y, currentStation, current_distance, route, distances);
+            GPS_OK = true;
         }
 
         Find_Train_by_Distance(x,y,stateDist,current_distance,route,distances);
