@@ -84,8 +84,7 @@ void Find_Train_by_GPS(float x, float y, int& state, std::map<std::string, std::
         cout<<"Opuszczono stacje: "<<route.at(currentStation)<<"  Następna stacja: "<<route.at(currentStation+1)<<endl<<endl;
         currentStation+=1;
     }
-
-
+    
 
     // cout << "\n\n state:" << state << "\n\n";
 

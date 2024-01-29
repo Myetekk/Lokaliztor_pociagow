@@ -41,7 +41,8 @@ void Find_Train_by_Distance(float x, float y, string& stateDist, float current_d
             break;
         }
         else if (current_distance > distance[i]+150  &&  current_distance <= distance[i]+300 ) {
-            current_message = "Opuszczono stacje: " + route[i] + "  Następna stacja: " + route[i+1];
+            if  (i != route.size()-1)
+                current_message = "Opuszczono stacje: " + route[i] + "  Następna stacja: " + route[i+1];
             break;
         }
     }

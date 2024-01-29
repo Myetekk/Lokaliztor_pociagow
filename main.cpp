@@ -202,8 +202,8 @@ int32_t main(int argc, char *argv[])
     }
     
     // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
-    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
-    //string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie1";  // short route with middle break
+    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
+    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie1";  // short route with middle break
     ifstream readFromFile(filePath);
     string line;
     float x,y;
@@ -241,10 +241,11 @@ int32_t main(int argc, char *argv[])
 
         Find_Train_by_Distance(x,y,stateDist,current_distance,route,distances);
         Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route,GPS_OK);
-
     }
 
-    if (remove("temp.txt") == 0)
+
+    cerr << "test5";
+        if (remove("temp.txt") == 0)
         printf("temp file deleted successfully");
     else
         printf("Unable to delete the temp file");
