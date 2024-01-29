@@ -86,7 +86,6 @@ void Find_Train_by_GPS(float x, float y, int& state, std::map<std::string, std::
     }
     
 
-    // cout << "\n\n state:" << state << "\n\n";
 
 
 }

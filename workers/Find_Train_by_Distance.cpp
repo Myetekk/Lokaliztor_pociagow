@@ -16,17 +16,8 @@ void readDistances(vector<int>& distance){
     json distance_json = json::parse(file_distance);
     distance = distance_json.get<vector<int>>();
 }
-int getIndexOfFirstStation(float current_distance,vector<int>& distances){
-    if(current_distance==0) return 0;
-    int n=distances.size();
-    int i=0;
-    while (i<n){
-        if(current_distance<=distances[i]) return i;
-        i++;
-    }
-    return 0;
 
-}
+//  locates the train by the distance
 void Find_Train_by_Distance(float x, float y, string& stateDist, float current_distance, vector<string> route, vector<int> distance){
     string current_location;
     string current_message = stateDist;

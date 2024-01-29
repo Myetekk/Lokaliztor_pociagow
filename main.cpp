@@ -183,7 +183,6 @@ int32_t main(int argc, char *argv[])
     std::map<std::string, std::vector<float>> coordinates;
     getStatsFromFile(coordinates,route);
     readDistances(distances);
-    //std::map<std::string, std::vector<float>> coordinates = readCoordinatesFromJSON("train_data/station.json");
     //Receiving data through network 
     //ipb = getIfBroadcastAddr(iface);
     //startReceiving(client,ipb,port);
@@ -210,7 +209,6 @@ int32_t main(int argc, char *argv[])
     int distance_from_start;
     int distance_on_start=-1;
     float current_distance;
-    int firststation = -1;
     int stateGPS = 0;
     string stateDist;
     bool GPS_OK = false;
@@ -227,14 +225,9 @@ int32_t main(int argc, char *argv[])
         //reading coords, and distance from file
         getCoords(data, x, y, distance_from_start);
         current_distance = (distance_from_start - distance_on_start);
-        if(firststation==-1){
-            firststation=getIndexOfFirstStation(current_distance,distances);
-        }
 
         if (!GPS_OK){
-            cerr<<"Test2";
             findCurrentStation(x, y, currentStation, current_distance, route, distances);
-            cerr<<"Curr Stat:"<<currentStation<<endl;
             currentStation += 1;
             GPS_OK = true;
         }
@@ -244,8 +237,7 @@ int32_t main(int argc, char *argv[])
     }
 
 
-    cerr << "test5";
-        if (remove("temp.txt") == 0)
+    if (remove("temp.txt") == 0)
         printf("temp file deleted successfully");
     else
         printf("Unable to delete the temp file");
