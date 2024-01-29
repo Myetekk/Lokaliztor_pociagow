@@ -52,11 +52,16 @@ void findCurrentStation(float x, float y, int& currentStation,  float current_di
 //  locates the train by the GPS coordinates
 void Find_Train_by_GPS(float x, float y, int& state, std::map<std::string, std::vector<float>>& statsDetails, int& currentStation, std::vector<std::string>& route, bool& GPS_OK){
     int64_t dist;
-
+    
     //std::cout<<"coordinatesX: "<< x <<"Y:"<<y<<"Map0:"<<statsDetails.at("Gliwice").at(0)<<"Map1:"<<statsDetails.at("Gliwice").at(1);
     distanceCal(x, y, statsDetails.at(route.at(currentStation)).at(0), statsDetails.at(route.at(currentStation)).at(1), &dist);
     dist=dist/1000;
     int radiusMargin = statsDetails.at(route.at(currentStation)).at(2);
+    if(x==0||y==0){ 
+        GPS_OK = false;
+        state = (int32_t)State::BEFORESTATION;
+        cerr<<"Test1";
+    }
     if(state == 0 && dist<radiusMargin){
         state = (int32_t)State::APROACHINGSTATION;
         cout << "BY GPS: \n";

@@ -203,6 +203,7 @@ int32_t main(int argc, char *argv[])
     
     // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
     string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
+    //string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie1";  // short route with middle break
     ifstream readFromFile(filePath);
     string line;
     float x,y;
@@ -231,12 +232,16 @@ int32_t main(int argc, char *argv[])
         }
 
         if (!GPS_OK){
+            cerr<<"Test2";
             findCurrentStation(x, y, currentStation, current_distance, route, distances);
+            cerr<<"Curr Stat:"<<currentStation<<endl;
+            currentStation += 1;
             GPS_OK = true;
         }
 
         Find_Train_by_Distance(x,y,stateDist,current_distance,route,distances);
         Find_Train_by_GPS(x,y,stateGPS,coordinates,currentStation,route,GPS_OK);
+
     }
 
     if (remove("temp.txt") == 0)
