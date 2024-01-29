@@ -201,9 +201,9 @@ int32_t main(int argc, char *argv[])
         std::cout << std::endl;
     }
     
-    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
+    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data";  // full route
     // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie";  // short route
-    string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie1";  // short route with middle break
+    // string filePath = "train_data/2022_07_22_08_10_Gliwice_Czestochowa_data_testowanie1";  // short route, with middle break
     ifstream readFromFile(filePath);
     string line;
     float x,y;
